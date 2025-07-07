@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mir/bloc/chat_state.dart';
 import 'package:mir/views/initial_view.dart';
 import 'bloc/chat_bloc.dart';
 
