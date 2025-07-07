@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String _apiKey = "sk-a4ecbb226e9c482ea890fd2f70c5671e";
+  final String _apiKey = "sk-a4ecbb226e9c482ea890fd2f70c5671e"; // 🔑
 
   Future<String> sendMessage(String message) async {
     const endpoint = "https://api.deepseek.com/v1/chat/completions";

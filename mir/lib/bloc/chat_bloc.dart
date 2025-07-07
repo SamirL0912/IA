@@ -1,25 +1,29 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mir/models/chat_model.dart';
-import 'package:mir/services/openia_service.dart';
+import '../services/openia_service.dart';
+import '../models/chat_model.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final List<ChatMessage> _messages = [];
-  final ApiService _apiService = ApiService();
+  final ApiService apiService = ApiService();
 
   ChatBloc() : super(ChatInitial()) {
     on<SendMessageEvent>((event, emit) async {
-      _messages.add(ChatMessage(role: 'user', content: event.message));
-      emit(ChatLoaded(List.from(_messages)));
-
       emit(ChatLoading());
-
       try {
-        final aiResponse = await _apiService.sendMessage(event.message);
-        _messages.add(ChatMessage(role: 'ai', content: aiResponse));
-        emit(ChatLoaded(List.from(_messages)));
+        print("⏳ Llamando a apiService con: ${event.message}");
+        final reply = await apiService.sendMessage(event.message);
+        print("📩 Respuesta: $reply");
+
+        final messages = [
+          ChatMessage(role: 'user', content: event.message),
+          ChatMessage(role: 'assistant', content: reply),
+        ];
+
+        emit(ChatSuccess(messages));
+        print("✅ Emití ChatSuccess");
       } catch (e) {
+        print("❌ Error: $e");
         emit(ChatError(e.toString()));
       }
     });

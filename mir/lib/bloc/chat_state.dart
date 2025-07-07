@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mir/models/chat_model.dart';
+import '../models/chat_model.dart';
 
 abstract class ChatState extends Equatable {
   const ChatState();
@@ -12,10 +12,10 @@ class ChatInitial extends ChatState {}
 
 class ChatLoading extends ChatState {}
 
-class ChatLoaded extends ChatState {
+class ChatSuccess extends ChatState {
   final List<ChatMessage> messages;
 
-  const ChatLoaded(this.messages);
+  const ChatSuccess(this.messages);
 
   @override
   List<Object?> get props => [messages];

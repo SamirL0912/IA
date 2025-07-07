@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mir/bloc/chat_bloc.dart';
-import 'package:mir/bloc/chat_state.dart';
-import 'package:mir/views/failure_view.dart';
-import 'package:mir/views/initial_view.dart';
-import 'package:mir/views/loading_view.dart';
-import 'package:mir/views/success_view.dart';
+import 'bloc/chat_bloc.dart';
+import 'bloc/chat_state.dart';
+import 'views/failure_view.dart';
+import 'views/initial_view.dart';
+import 'views/loading_view.dart';
+import 'views/success_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,19 +17,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatBloc(),
+      create: (_) => ChatBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
+            print("🔄 State actual: $state");
             if (state is ChatInitial) {
-              return InitialView();
-            } else if (state is LoadingView) {
-              return LoadingView();
+              return const InitialView();
+            } else if (state is ChatLoading) {
+              return const LoadingView();
+            } else if (state is ChatSuccess) {
+              return SuccessView(messages: state.messages);
             } else if (state is ChatError) {
-              return FailedView();
+              return FailedView(message: state.error);
             }
-            return InitialView();
+            return const InitialView();
           },
         ),
       ),
