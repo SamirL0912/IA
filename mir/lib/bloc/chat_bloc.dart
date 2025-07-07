@@ -10,14 +10,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   ChatBloc() : super(ChatInitial()) {
     on<SendMessageEvent>((event, emit) async {
-      _messages.add(ChatMessage(user: 'user', content: event.message));
+      _messages.add(ChatMessage(role: 'user', content: event.message));
       emit(ChatLoaded(List.from(_messages)));
 
       emit(ChatLoading());
 
       try {
         final aiResponse = await _apiService.sendMessage(event.message);
-        _messages.add(ChatMessage(user: 'ai', content: aiResponse));
+        _messages.add(ChatMessage(role: 'ai', content: aiResponse));
         emit(ChatLoaded(List.from(_messages)));
       } catch (e) {
         emit(ChatError(e.toString()));
